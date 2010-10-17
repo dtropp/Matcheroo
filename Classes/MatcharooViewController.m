@@ -17,6 +17,7 @@
 - (void)resetCells {
 	topLeft.backgroundColor = [UIColor blueColor];
 	topLeft.cellType = @"blue";
+//	[[topLeft.subviews objectAtIndex:0] removeFromSuperview];
 	topRight.backgroundColor = [UIColor redColor];
 	topRight.cellType = @"red";
 	bottomLeft.backgroundColor = [UIColor redColor];
@@ -42,18 +43,21 @@
 		self.firstCell = touchedCell;
 	}	
 	
-//	BOOL allMatched = TRUE;
-//	for (CellView *cell in self.cells) {
-//		if (!cell.matched) {
-//			allMatched = FALSE;
-//			break;
-//		}
-//	}
-//	
-//	if (allMatched) {
-//		NSLog(@"all matched!");
-//		[self resetCells];
-//	}
+	BOOL allMatched = TRUE;
+	for (CellView *cell in self.cells) {
+		NSLog([NSString stringWithFormat:@"cell has matched = %d", cell.matched]);
+		if (!cell.matched) {
+			allMatched = FALSE;
+			break;
+		}
+	}
+
+	NSLog([NSString stringWithFormat:@"all matched = %d", allMatched]);
+	
+	if (allMatched) {
+		NSLog(@"all matched!");
+		[self resetCells];
+	}
 	
 }
 /*
