@@ -12,8 +12,12 @@
 
 @interface CellView : UIView {
 	MatcharooViewController *matchController;
+	NSString *cellType;
+	BOOL matched;
 }
 
 @property (nonatomic, retain) MatcharooViewController *matchController;
+@property (nonatomic, retain) NSString *cellType;
+@property (nonatomic, readwrite) BOOL matched;
 
 @end

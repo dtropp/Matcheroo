@@ -11,7 +11,7 @@
 
 @implementation CellView
 
-@synthesize matchController;
+@synthesize matchController, cellType, matched;
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {

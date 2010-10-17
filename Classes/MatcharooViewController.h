@@ -14,12 +14,16 @@
 	CellView *topRight;
 	CellView *bottomLeft;
 	CellView *bottomRight;
+	CellView *firstCell;
+	NSArray *cells;
 }
 
 @property(nonatomic, retain) IBOutlet CellView *topLeft;
 @property(nonatomic, retain) IBOutlet CellView *topRight;
 @property(nonatomic, retain) IBOutlet CellView *bottomLeft;
 @property(nonatomic, retain) IBOutlet CellView *bottomRight;
+@property(nonatomic, retain) CellView *firstCell;
+@property(nonatomic, retain) NSArray *cells;
 
 -(void) touchedCell:(CellView *) cell;
 

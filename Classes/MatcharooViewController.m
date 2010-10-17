@@ -10,10 +10,51 @@
 
 @implementation MatcharooViewController
 
-@synthesize topLeft, topRight, bottomLeft, bottomRight;
+@synthesize topLeft, topRight, bottomLeft, bottomRight, firstCell, cells;
+
+
+// Set cell colours again
+- (void)resetCells {
+	topLeft.backgroundColor = [UIColor blueColor];
+	topLeft.cellType = @"blue";
+	topRight.backgroundColor = [UIColor redColor];
+	topRight.cellType = @"red";
+	bottomLeft.backgroundColor = [UIColor redColor];
+	bottomLeft.cellType = @"red";
+	bottomRight.backgroundColor = [UIColor blueColor];
+	bottomRight.cellType = @"blue";
+}
 
 -(void) touchedCell : (CellView *) touchedCell {
 	NSLog(@"matcharoo knows cell touched with colour");
+	if (firstCell == nil) {
+		NSLog(@"new cell");
+		self.firstCell = touchedCell;
+	} else if (firstCell.cellType == touchedCell.cellType && firstCell != touchedCell) {
+		NSLog(@"colour matches");
+		self.firstCell.backgroundColor = [UIColor grayColor];
+		self.firstCell.matched = TRUE;
+		touchedCell.backgroundColor = [UIColor grayColor];
+		touchedCell.matched = TRUE;
+		self.firstCell = nil;
+	} else {
+		NSLog(@"no match");
+		self.firstCell = touchedCell;
+	}	
+	
+//	BOOL allMatched = TRUE;
+//	for (CellView *cell in self.cells) {
+//		if (!cell.matched) {
+//			allMatched = FALSE;
+//			break;
+//		}
+//	}
+//	
+//	if (allMatched) {
+//		NSLog(@"all matched!");
+//		[self resetCells];
+//	}
+	
 }
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -31,18 +72,14 @@
 }
 */
 
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	NSArray *cells = [NSArray arrayWithObjects:topLeft, topRight, bottomLeft, bottomRight, nil];
-	for (CellView *cell in cells) {
+	self.cells = [NSArray arrayWithObjects:topLeft, topRight, bottomLeft, bottomRight, nil];
+	for (CellView *cell in self.cells) {
 		cell.matchController = self;
 	}
-	topLeft.backgroundColor = [UIColor blueColor];
-	topRight.backgroundColor = [UIColor redColor];
-	bottomLeft.backgroundColor = [UIColor redColor];
-	bottomRight.backgroundColor = [UIColor blueColor];
+	[self resetCells];
 }
 
 // Override to allow orientations other than the default portrait orientation.
