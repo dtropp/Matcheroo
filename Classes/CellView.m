@@ -30,13 +30,13 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSLog(@"touched");
-	[self.matchController touchedCell:self];
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(150, 200, 450, 50)];
 	label.backgroundColor = [UIColor clearColor];
 	label.font = [UIFont systemFontOfSize:72];
 	label.text = @"touched";
 	[self addSubview:label];
 	[label release];
+	[self.matchController touchedCell:self];
 }
 
 - (void)dealloc {

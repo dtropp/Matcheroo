@@ -17,13 +17,21 @@
 - (void)resetCells {
 	topLeft.backgroundColor = [UIColor blueColor];
 	topLeft.cellType = @"blue";
-//	[[topLeft.subviews objectAtIndex:0] removeFromSuperview];
 	topRight.backgroundColor = [UIColor redColor];
 	topRight.cellType = @"red";
 	bottomLeft.backgroundColor = [UIColor redColor];
 	bottomLeft.cellType = @"red";
 	bottomRight.backgroundColor = [UIColor blueColor];
 	bottomRight.cellType = @"blue";
+	
+	for (CellView *cell in self.cells) {
+		NSLog([NSString stringWithFormat:@"cell has matched = %d", cell.matched]);
+		for (UIView *view in cell.subviews) {
+			NSLog(@"removing cell");
+			[view removeFromSuperview];
+		}
+		cell.matched = FALSE;
+	}
 }
 
 -(void) touchedCell : (CellView *) touchedCell {
