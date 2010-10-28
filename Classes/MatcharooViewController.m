@@ -10,7 +10,7 @@
 
 @implementation MatcharooViewController
 
-@synthesize topLeft, topRight, bottomLeft, bottomRight, firstCell, cells;
+@synthesize topLeft, topRight, bottomLeft, bottomRight, firstCell, cells, soundFileObject, soundFileURLRef;
 
 
 // Set cell colours again
@@ -30,32 +30,42 @@
 			NSLog(@"removing cell");
 			[view removeFromSuperview];
 		}
-		cell.matched = FALSE;
+		cell.matched = NO;
 	}
 }
 
 -(void) touchedCell : (CellView *) touchedCell {
 	NSLog(@"matcharoo knows cell touched with colour");
+	AudioServicesPlaySystemSound(soundFileObject);
+	[UIView beginAnimations:@"touched" context:nil];
+	[UIView setAnimationDuration:0.3];
+	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:touchedCell cache:YES];
+	[UIView commitAnimations];
+
 	if (firstCell == nil) {
 		NSLog(@"new cell");
 		self.firstCell = touchedCell;
 	} else if (firstCell.cellType == touchedCell.cellType && firstCell != touchedCell) {
 		NSLog(@"colour matches");
 		self.firstCell.backgroundColor = [UIColor grayColor];
-		self.firstCell.matched = TRUE;
+		self.firstCell.matched = YES;
 		touchedCell.backgroundColor = [UIColor grayColor];
-		touchedCell.matched = TRUE;
+		touchedCell.matched = YES;
+		[UIView beginAnimations:@"first touch" context:nil];
+		[UIView setAnimationDuration:0.3];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.firstCell cache:YES];
+		[UIView commitAnimations];
 		self.firstCell = nil;
 	} else {
 		NSLog(@"no match");
 		self.firstCell = touchedCell;
 	}	
 	
-	BOOL allMatched = TRUE;
+	BOOL allMatched = YES;
 	for (CellView *cell in self.cells) {
 		NSLog([NSString stringWithFormat:@"cell has matched = %d", cell.matched]);
 		if (!cell.matched) {
-			allMatched = FALSE;
+			allMatched = NO;
 			break;
 		}
 	}
@@ -92,6 +102,16 @@
 		cell.matchController = self;
 	}
 	[self resetCells];
+
+	NSLog(@"%@", [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: @"tap" ofType: @"aif"]]);
+	NSURL *tapSound   = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: @"tap" ofType: @"aif"]];
+	self.soundFileURLRef = (CFURLRef) [tapSound retain];
+	
+	NSLog(@"%@", tapSound);
+	
+	// Create a system sound object representing the sound file.
+	NSLog(@"%d", AudioServicesCreateSystemSoundID(soundFileURLRef, &soundFileObject));			
+	
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -113,6 +133,8 @@
 
 
 - (void)dealloc {
+	AudioServicesDisposeSystemSoundID(soundFileObject);
+	CFRelease(soundFileURLRef);
     [super dealloc];
 }
 

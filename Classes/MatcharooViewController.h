@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioServices.h>
 #import "CellView.h"
 
 @interface MatcharooViewController : UIViewController {
@@ -16,6 +17,9 @@
 	CellView *bottomRight;
 	CellView *firstCell;
 	NSArray *cells;
+	
+	SystemSoundID soundFileObject;
+	CFURLRef soundFileURLRef;
 }
 
 @property(nonatomic, retain) IBOutlet CellView *topLeft;
@@ -24,6 +28,9 @@
 @property(nonatomic, retain) IBOutlet CellView *bottomRight;
 @property(nonatomic, retain) CellView *firstCell;
 @property(nonatomic, retain) NSArray *cells;
+
+@property (nonatomic, readwrite) CFURLRef soundFileURLRef;
+@property (readonly) SystemSoundID soundFileObject;
 
 -(void) touchedCell:(CellView *) cell;
 
